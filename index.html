@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso - Tesouraria</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #e9ecef; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center; }
+        h2 { color: #2c3e50; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ced4da; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #0d6efd; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        button:hover { background-color: #0b5ed7; }
+        .error { color: #dc3545; font-size: 0.9rem; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Tesouraria da Igreja</h2>
+        <input type="email" id="email" placeholder="E-mail do Administrador">
+        <input type="password" id="senha" placeholder="Senha">
+        <button onclick="login()">ENTRAR</button>
+        <p id="msg" class="error"></p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // --- COLE SUA CONFIGURAÇÃO DO FIREBASE AQUI ---
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_PROJETO.firebaseapp.com",
+            projectId: "SEU_PROJETO",
+            storageBucket: "SEU_PROJETO.appspot.com",
+            messagingSenderId: "NUMERO",
+            appId: "NUMERO"
+        };
+        // ----------------------------------------------
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.login = function() {
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            const msg = document.getElementById('msg');
+            
+            signInWithEmailAndPassword(auth, email, senha)
+                .then(() => {
+                    window.location.href = "sistema.html";
+                })
+                .catch((error) => {
+                    msg.style.display = "block";
+                    msg.innerText = "Acesso negado: " + error.code;
+                });
+        }
+    </script>
+</body>
+</html>
